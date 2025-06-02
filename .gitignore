@@ -1,0 +1,11 @@
+# Ignore build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.log
+*.tmp
+*.cache
+*.vs/
+*.json
+*.csproj
