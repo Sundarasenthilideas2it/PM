@@ -478,14 +478,27 @@ namespace ClairTourTiny.Core.Services
 
         public async Task<IEnumerable<EmployeeJobType>> GetEmployeeJobTypes()
         {
+
+        
             using (var connection = new SqlConnection(_connectionString))
             {
-                var sql = @"
-                    SELECT jt.empno, jt.jobtype 
-                    FROM dbo.peEmployeeJobTypes jt
-                    JOIN dbo.peemployee e ON e.empno = jt.empno
-                    WHERE jt.jobtype in ('ACCTEXEC','OPERATIONS','ENGR','CRFPLENGR', 'CREWOPS') 
-                    AND (e.empstatus = 'A' OR e.empstatus = 'R')";
+               
+          var sql = @"
+        SELECT 
+            d.empno,
+            d.firstname,
+            d.lastname,
+            d.empname,
+            d.GroupStatus,
+            d.DisplayOrder,
+            d.InMyDivision,
+            jt.jobtype
+        FROM Employees_In_My_Division d
+        JOIN peEmployee e ON d.empno = e.empno
+        JOIN peEmployeeJobTypes jt ON e.empno = jt.empno
+        WHERE jt.jobtype IN ('ACCTEXEC','OPERATIONS','ENGR','CRFPLENGR','CREWOPS')
+          AND (e.empstatus = 'A' OR e.empstatus = 'R')
+        ORDER BY d.DisplayOrder, d.InMyDivision DESC";
                 return await connection.QueryAsync<EmployeeJobType>(sql);
             }
         }
@@ -1193,12 +1206,12 @@ namespace ClairTourTiny.Core.Services
                     : await _context.MyUserInfos.FirstOrDefaultAsync(u => u.UserName == username);
 
               
-                Console.WriteLine("user.DefaultBillingCompany: " + user.DefaultBillingCompany);
+//                Console.WriteLine("user.DefaultBillingCompany: " + user.DefaultBillingCompany);
                 var company = user.DefaultBillingCompany != null 
                     ? await _context.Companies.FirstOrDefaultAsync(c => c.CompanyCode == user.DefaultBillingCompany)
                     : null;
 
-                Console.WriteLine("user.DefaultPropType: " + user.DefaultPropType);
+               // Console.WriteLine("user.DefaultPropType: " + user.DefaultPropType);
                 var propType = user.DefaultPropType != null
                     ? await _context.Pjproptypes.FirstOrDefaultAsync(p => p.Proptype == user.DefaultPropType)
                     : null;

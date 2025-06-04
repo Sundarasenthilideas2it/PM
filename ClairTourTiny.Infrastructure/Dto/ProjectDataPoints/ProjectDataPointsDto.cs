@@ -178,8 +178,14 @@ namespace ClairTourTiny.Infrastructure.Dto.DTOs
 
     public class EmployeeJobType
     {
-        public string EmpNo { get; set; }
-        public string JobType { get; set; }
+    public string empno { get; set; }
+    public string firstname { get; set; }
+    public string lastname { get; set; }
+    public string empname { get; set; }
+    public string GroupStatus { get; set; }
+    public int DisplayOrder { get; set; }
+    public bool InMyDivision { get; set; }
+    public string jobtype { get; set; }
     }
 
     public class BudgetCategory
